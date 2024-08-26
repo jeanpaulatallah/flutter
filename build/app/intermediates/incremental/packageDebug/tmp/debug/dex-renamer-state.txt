@@ -1,0 +1,4 @@
+#Mon Aug 26 13:04:38 EEST 2024
+base.0=/Users/macbookpro/StudioProjects/flutter_project/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
