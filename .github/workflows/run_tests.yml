@@ -12,8 +12,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Android Emulator
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+      - name: Set up Android SDK
+        uses: r0adkll/setup-android-emulator@v2
+        with:
+          api-level: 30  # Set the desired API level
+          target: google_apis
+          arch: x86_64
+
+      - name: Download Emulator System Images
+        run: sdkmanager --update && sdkmanager "system-images;android-30;google_apis;x86_64"
+
+      - name: Create and Start Emulator
+        run: |
+          echo no | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" -d pixel
+          emulator -avd test -no-window -no-audio &
 
       - uses: subosito/flutter-action@v2
         with:
