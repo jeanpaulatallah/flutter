@@ -211,8 +211,7 @@ class _HomeState extends State<Home> {
               ],
             ),
             SizedBox(height: 30,),
-            RaisedButton(
-                color: Colors.blue,
+            ElevatedButton(
                 onPressed: () {
                   setState(() {
                     flutterLevel = 0;
