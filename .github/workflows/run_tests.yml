@@ -12,12 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-#      - name: Set up Android SDK
-#        uses: android-actions/setup-android@v3
-#        with:
-#          api-level: 30  # Specify the desired API level
-#          target: google_apis
-#          arch: x86_64
+      - name: flutter-android-sdk
+        uses: andreujuanc/flutter-android-sdk@v1.0.6
+          
 
       - name: Download Emulator System Images
         run: sdkmanager --update && sdkmanager "system-images;android-30;google_apis;x86_64"
