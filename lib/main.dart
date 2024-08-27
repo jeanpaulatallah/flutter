@@ -255,7 +255,7 @@ class _HomeState extends State<Home> {
                 fontFamily: fontFam,
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
 
               onPressed:  () {
               setState(() {
@@ -264,7 +264,6 @@ class _HomeState extends State<Home> {
               });
             },
               key: const Key('submit_button_key'),
-              color: Colors.blue,
               child: Text(
                 'Submit',
                 style: TextStyle(
