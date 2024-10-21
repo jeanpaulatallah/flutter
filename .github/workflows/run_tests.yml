@@ -21,5 +21,10 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
+      - name: Android Emulator Runner
+        uses: ReactiveCircus/android-emulator-runner@v2.33.0
+        with:
+          api-level: 33
+
       - name: Build APK
         run: flutter build apk --release
