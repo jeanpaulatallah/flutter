@@ -22,7 +22,12 @@ jobs:
         run: flutter pub get
 
       - name: Android Emulator Runner
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
-
+        uses: ReactiveCircus/android-emulator-runner@v2.33.0
+        with:
+          cores: 4
+          ram-size: 4000M
+          avd-name: Tests
+          disable-linux-hw-accel: false
+          
       - name: Run Tests
         run: flutter test integration_test/app_test.dart
