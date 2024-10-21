@@ -12,8 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: flutter-android-sdk
-        uses: andreujuanc/flutter-android-sdk@v1.0.6
+      - name: Setup Flutter
+        run: |
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.3-stable.tar.xz
+          tar xf flutter_linux_3.24.3-stable.tar.xz
+          echo 'export PATH="$PATH:$HOME/flutter/bin"' >> ~/.bashrc
+          source ~/.bashrc
 
       - name: Upgrade Flutter to latest version
         run: flutter upgrade
