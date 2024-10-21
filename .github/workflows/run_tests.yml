@@ -22,10 +22,7 @@ jobs:
         run: flutter pub get
 
       - name: Android Emulator Runner
-        uses: ReactiveCircus/android-emulator-runner@v2.33.0
-        with:
-          api-level: 33
-          script: ./gradlew connectedCheck
+        uses: vgaidarji/android-github-actions-emulator@v1.0.1
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Run Tests
+        run: flutter test integration_test/app_test.dart
