@@ -21,6 +21,9 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
@@ -30,7 +33,10 @@ jobs:
           ram-size: 4000M
           avd-name: Tests
           disable-linux-hw-accel: true
-          script: ./gradlew connectedCheck
+          script: |
+            adb wait-for-device
+            adb shell input keyevent 82
+            ./gradlew connectedAndroidTest --continue
           
       - name: Run Tests
         run: flutter test integration_test/app_test.dart
