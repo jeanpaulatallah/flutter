@@ -24,6 +24,7 @@ jobs:
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
+          arch: arm64-v8a
           api-level: 33
           cores: 4
           ram-size: 4000M
