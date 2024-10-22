@@ -21,6 +21,9 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
+      - name: Build with Gradle
+        uses: gradle/actions@v4.1.0
+
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
