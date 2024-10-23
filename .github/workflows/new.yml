@@ -24,11 +24,14 @@ jobs:
         mkdir -p $HOME/Android/Sdk/cmdline-tools
         unzip commandlinetools-linux-11076708_latest.zip -d $HOME/Android/Sdk/cmdline-tools
         rm commandlinetools-linux-11076708_latest.zip
-        yes | $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/Android/Sdk --install "platform-tools" "platforms;android-30" "system-images;android-30;google_apis;x86"
+        yes | $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/Android/Sdk --install "platform-tools" "platforms;android-30" "system-images;android-30;google_apis;x86" "emulator"
+
+    - name: Accept Licenses
+      run: |
+        yes | $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --licenses
 
     - name: Create and start Android Emulator
       run: |
-        yes | $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --licenses
         $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force --device "pixel"
         nohup $HOME/Android/Sdk/emulator/emulator -avd test -no-window -no-audio -gpu swiftshader_indirect &
 
