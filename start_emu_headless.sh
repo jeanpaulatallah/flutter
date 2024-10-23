@@ -9,19 +9,7 @@ NC='\033[0m' # No Color
 emulator_name=${EMULATOR_NAME}
 
 function check_hardware_acceleration() {
-    if [[ "$HW_ACCEL_OVERRIDE" != "" ]]; then
-        hw_accel_flag="$HW_ACCEL_OVERRIDE"
-    else
-        # Generic Linux hardware acceleration check
-        HW_ACCEL_SUPPORT=$(grep -E -c '(vmx|svm)' /proc/cpuinfo)
-
-        if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
-            hw_accel_flag="-accel off"
-        else
-            hw_accel_flag="-accel on"
-        fi
-    fi
-
+    hw_accel_flag="-accel off"  # Always use software acceleration on GitHub Actions
     echo "$hw_accel_flag"
 }
 
@@ -29,11 +17,10 @@ hw_accel_flag=$(check_hardware_acceleration)
 
 function launch_emulator () {
   adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill
-  options="@${emulator_name} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none"
+  options="@${emulator_name} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none -gpu swiftshader_indirect"
 
-  # Linux specific launch
-  echo "${OSTYPE}: emulator ${options} -gpu off"
-  nohup emulator $options -gpu off &
+  echo "${OSTYPE}: emulator ${options}"
+  nohup emulator $options &
 
   if [ $? -ne 0 ]; then
     echo "Error launching emulator"
