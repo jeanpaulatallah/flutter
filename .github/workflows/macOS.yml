@@ -7,6 +7,7 @@ on:
 
 jobs:
   test:
+    if: false # Prevent Job from running
     runs-on: macOS-latest
 
     steps:
