@@ -8,13 +8,13 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
+    - name: Setup Java Environment
+      uses: actions/setup-java@v4
       with:
-        java-version: '17'
         distribution: 'oracle'
+        java-version: '17'
 
     - name: Install Android SDK
       run: |
