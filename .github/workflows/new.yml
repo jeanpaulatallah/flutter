@@ -13,16 +13,17 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: '17'
+        distribution: oracle
 
     - name: Install Android SDK
       run: |
         sudo apt-get update
         sudo apt-get install -y wget unzip
-        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
         mkdir -p $HOME/Android/Sdk/cmdline-tools
-        unzip commandlinetools-linux-7583922_latest.zip -d $HOME/Android/Sdk/cmdline-tools
-        rm commandlinetools-linux-7583922_latest.zip
+        unzip commandlinetools-linux-11076708_latest.zip -d $HOME/Android/Sdk/cmdline-tools
+        rm commandlinetools-linux-11076708_latest.zip
         yes | $HOME/Android/Sdk/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/Android/Sdk --install "platform-tools" "platforms;android-30" "system-images;android-30;google_apis;x86"
 
     - name: Create and start Android Emulator
