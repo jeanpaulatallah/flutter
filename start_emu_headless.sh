@@ -17,7 +17,7 @@ hw_accel_flag=$(check_hardware_acceleration)
 
 function launch_emulator () {
   adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill
-  options="@${emulator_name} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none -gpu swiftshader_indirect"
+  options="@${emulator_name} -no-window -no-snapshot -screen no-touch -noaudio -memory 4096 -no-boot-anim ${hw_accel_flag} -camera-back none
 
   echo "${OSTYPE}: emulator ${options}"
   nohup emulator $options &
@@ -29,10 +29,17 @@ function launch_emulator () {
 }
 
 function check_emulator_status () {
+  sleep 10
   printf "${G}==> ${BL}Checking emulator booting up status 🧐${NC}\n"
   start_time=$(date +%s)
   spinner=( "⠹" "⠺" "⠼" "⠶" "⠦" "⠧" "⠇" "⠏" )
   timeout=${EMULATOR_TIMEOUT:-300}
+
+  until adb wait-for-device; do
+      printf "${YE}==> Waiting for ADB to connect... ${spinner[$i]} ${NC}\r"
+      i=$(( (i+1) % 8 ))
+      sleep 1
+  done
 
   while true; do
     result=$(adb shell getprop sys.boot_completed 2>&1)
