@@ -30,13 +30,6 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
-      - name: Check KVM
-        run: |
-          if ! kvm-ok; then
-            echo "KVM is not available. Please check the installation.";
-            exit 1;
-          fi
-
       - name: Add AVD tools to PATH
         run: |
           echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
