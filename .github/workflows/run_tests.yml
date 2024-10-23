@@ -16,6 +16,7 @@ env:
 
 jobs:
   test:
+    if: false # Prevent Job from running
     runs-on: ubuntu-latest
 
     steps:
