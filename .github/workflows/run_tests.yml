@@ -29,6 +29,9 @@ jobs:
       - name: Flutter doctor output
         run: flutter doctor --verbose
 
+      - name: Flutter clean
+        run: flutter clean
+
       - name: Flutter pub get
         run: flutter pub get
 
