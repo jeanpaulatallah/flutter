@@ -37,6 +37,7 @@ jobs:
 
     - name: Wait for Emulator to start
       run: |
+        PATH=$PATH:$HOME/Android/Sdk/platform-tools
         timeout 90 bash -c 'until echo "adb devices" | adb shell; do sleep 5; done'
 
     - name: Set up Flutter
