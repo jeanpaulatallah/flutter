@@ -38,6 +38,9 @@ jobs:
           profile: 'Nexus 6'
           script: adb devices
 
+      - name: Connect to created emulator
+        run: adb connect emulator-5554
+
       - name: Run Flutter tests
         run: flutter test integration_test/app_test.dart
 
