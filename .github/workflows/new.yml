@@ -1,68 +1,45 @@
-name: Android Emulator CI
+name: Flutter Integration Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  android:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
 
-    - name: Setup Java Environment
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'oracle'
-        java-version: '17'
+      - name: Set up JDK
+        uses: actions/setup-java@v4.5.0
+        with:
+          distribution: 'oracle'
+          java-version: '17'  # Set Java version as required for your project
 
-    - name: Install Android SDK
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip
-        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-        mkdir -p $HOME/Android/Sdk/cmdline-tools
-        unzip commandlinetools-linux-11076708_latest.zip -d $HOME/Android/Sdk/cmdline-tools
-        rm commandlinetools-linux-11076708_latest.zip
-        yes | $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/Android/Sdk --install "platform-tools" "platforms;android-30" "system-images;android-30;google_apis;x86" "emulator"
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2.14.0
+        with:
+          flutter-version: '3.0.5'  # Specify the Flutter version you need
 
-    - name: Accept Licenses
-      run: |
-        yes | $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --licenses
+      - name: Install dependencies
+        run: |
+          flutter clean
+          flutter pub get
 
-    - name: Create and start Android Emulator
-      run: |
-        export ANDROID_AVD_HOME=$HOME/.android/avd
-        $HOME/Android/Sdk/cmdline-tools/cmdline-tools/bin/avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force --device "pixel"
+      - name: Set up Android emulator
+        run: |
+          echo "no" | sdkmanager --install "system-images;android-30;default;x86"
+          echo "no" | sdkmanager --licenses
+          sdkmanager --install "platform-tools"
+          sdkmanager --install "platforms;android-30"
+          emulator -avd test -no-audio -no-window &
+          adb wait-for-device
+          adb shell input keyevent 82 &
 
-        if [ $? -ne 0 ]; then
-        echo "AVD creation failed. Check the logs."
-        exit 1
-        fi
-        
-        nohup $HOME/Android/Sdk/emulator/emulator -avd test -no-window -no-audio -gpu swiftshader_indirect &
-
-    - name: Wait for Emulator to start
-      run: |
-        PATH=$PATH:$HOME/Android/Sdk/platform-tools
-        timeout 300 bash -c 'until echo "adb devices" | adb shell; do sleep 5; done'
-
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2.14.0
-      with:
-        flutter-version: 3.0.5
-        channel: stable
-
-    - name: Flutter doctor
-      run: flutter doctor --verbose
-
-    - name: Flutter clean
-      run: flutter clean
-
-    - name: Flutter pub get
-      run: flutter pub get
-
-    - name: Run tests
-      run: flutter test integration_test/app_test.dart
-
+      - name: Run Flutter tests
+        run: flutter test integration_test/app_test.dart
 
