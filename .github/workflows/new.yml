@@ -30,6 +30,14 @@ jobs:
           flutter clean
           flutter pub get
 
+
+      - name: Android Emulator Runner
+        uses: ReactiveCircus/android-emulator-runner@v2.33.0
+        with:
+          api-level: 30
+          profile: 'Nexus 6'
+          script: ./emulator -avd
+
       - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v3.2.1
         with:
