@@ -37,7 +37,7 @@ jobs:
           api-level: 30
           arch: x86_64
           profile: 'Nexus 6'
-          script: ./emulator -avd
+          script: adb devices
 
       - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v3.2.1
