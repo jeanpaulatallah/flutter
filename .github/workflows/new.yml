@@ -30,7 +30,6 @@ jobs:
           flutter clean
           flutter pub get
 
-
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
@@ -38,26 +37,6 @@ jobs:
           arch: x86_64
           profile: 'Nexus 6'
           script: adb devices
-
-      - name: Setup Android SDK Tools
-        uses: android-actions/setup-android@v3.2.1
-        with:
-          packages: tools platform-tools system-images;android-30;default;x86_64 platforms;android-30 emulator
-          
-      - name: Set up Android emulator
-        run: |
-          echo "no" | avdmanager create avd -n JP -k "system-images;android-30;default;x86_64" --force --device "pixel"
-
-      - name: Search for .ini
-        run: find . -name "JP.ini"
-          
-      - name: List AVDs
-        run:
-          ls /usr/local/lib/.android/avd
-
-      - name: Start Emulator
-        run:
-          /usr/local/lib/android/sdk/emulator/./emulator -avd JP -no-audio -no-window &
 
       - name: Run Flutter tests
         run: flutter test integration_test/app_test.dart
