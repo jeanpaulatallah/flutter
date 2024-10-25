@@ -40,6 +40,7 @@ jobs:
 
       - name: Connect to created emulator
         run: |
+          emulator -port 5554 -avd test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -accel off &
           adb -s emulator-5554 shell getprop sys.boot_completed
           adb -s emulator-5554 shell settings put global window_animation_scale 0.0
           adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
