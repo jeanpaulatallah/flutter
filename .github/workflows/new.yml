@@ -33,7 +33,7 @@ jobs:
       - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v3.2.1
         with:
-          packages: tools platform-tools system-images;android-30;default;x86 platforms;android-30 emulator
+          packages: tools platform-tools system-images;android-30;default;x86_64 platforms;android-30 emulator
           
       - name: Set up Android emulator
         run: |
