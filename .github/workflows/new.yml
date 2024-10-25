@@ -39,8 +39,6 @@ jobs:
         run: |
           avdmanager create avd -n test -k "system-images;android-30;default;x86_64" --force --device "pixel"
           /usr/local/lib/android/sdk/emulator/./emulator -avd test -no-audio -no-window &
-          adb wait-for-device
-          adb shell input keyevent 82 &
 
       - name: Run Flutter tests
         run: flutter test integration_test/app_test.dart
