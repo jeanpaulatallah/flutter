@@ -38,6 +38,9 @@ jobs:
       - name: Set up Android emulator
         run: |
           avdmanager create avd -n JP -k "system-images;android-30;default;x86_64" --force --device "pixel"
+
+      - name: Search for .ini
+        run: find . -name "JP.ini"
           
       - name: List AVDs
         run:
