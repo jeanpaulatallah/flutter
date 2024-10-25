@@ -35,6 +35,7 @@ jobs:
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
           api-level: 30
+          arch: x86_64
           profile: 'Nexus 6'
           script: ./emulator -avd
 
