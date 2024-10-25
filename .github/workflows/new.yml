@@ -44,7 +44,7 @@ jobs:
           
       - name: List AVDs
         run:
-          ls $HOME/.android/avd
+          ls /usr/local/lib/.android/avd
 
       - name: Start Emulator
         run:
