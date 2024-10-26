@@ -22,23 +22,28 @@ void main() {
           }
 
           app.main();
-          await tester.pumpAndSettle(); // Ensure the app is fully settled
+          await tester.pumpAndSettle();
+          debugPrint('App opened'); // Ensure the app is fully settled
           // await takeScreenshot(tester, 'initial_screen');
 
           await tester.enterText(
               find.byKey(const Key('text_field_key')), 'addingtext');
           await tester.pumpAndSettle(); // Ensure UI updates
+          debugPrint('Text added');
           // await takeScreenshot('after_text_entry');
           await tester.tap(find.byKey(const Key('add_key')));
           await tester.pumpAndSettle(); // Ensure UI updates
+          debugPrint('Button tapped');
           //takeScreenshot(tester, 'after_tap_${i}');
 
           await tester.tap(find.byKey(const Key('submit_button_key')));
           await tester.pumpAndSettle(); // Ensure UI updates
+          debugPrint('Clicked on submit');
           // await takeScreenshot('after_submit');
 
           await tester.tap(find.byKey(const Key('reset_button_key')));
           await tester.pumpAndSettle(); // Ensure UI updates
+          debugPrint('Clicked on reset');
           // await takeScreenshot('after_reset');
         },
       );
