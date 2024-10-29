@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +29,15 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+
+      - name: Patrol
+        run: |
+          dart pub global activate patrol_cli
+          export PATH=$PATH:$HOME/.pub-cache/bin
+
+      - name: Patrol Doctor
+        run: patrol doctor
+
 
       - name: Enable KVM group perms
         run: |
