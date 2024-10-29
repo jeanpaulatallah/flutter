@@ -50,5 +50,5 @@ jobs:
         with:
           api-level: 30
           arch: x86_64
-          profile: 'pixel_7_pro'
+          profile: 'pixel_6_pro'
           script: flutter test integration_test/app_test.dart
