@@ -38,7 +38,7 @@ jobs:
       - name: Emulator Setup
         run: |
           echo no | avdmanager create avd --force -n Pixel6Pro --abi 'google_apis/x86_64' --package 'system-images;android-35;google_apis;x86_64' --device 'pixel_6_pro'
-          /usr/local/lib/android/sdk/./emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
+          /usr/local/lib/android/sdk/emulator/./emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
           adb -s emulator-5554 shell input keyevent 82
           adb -s emulator-5554 shell settings put global window_animation_scale 0.0
           adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
