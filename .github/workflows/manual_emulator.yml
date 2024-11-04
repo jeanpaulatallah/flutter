@@ -1,0 +1,69 @@
+name: Flutter Integration Tests Manual Emulator Setup
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4.5.0
+        with:
+          distribution: 'oracle'
+          java-version: '17'  # Set Java version as required for your project
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2.14.0
+        with:
+          flutter-version: '3.0.5'  # Specify the Flutter version you need
+
+      - name: Install dependencies
+        run: |
+          flutter clean
+          flutter pub get
+      - name: Patrol
+        run: |
+          dart pub global activate patrol_cli
+          export PATH=$PATH:$HOME/.pub-cache/bin
+      - name: Patrol Doctor
+        run: patrol doctor
+
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+
+      - name: Install and configure Android SDK
+        run: |
+          /usr/bin/sh -c \yes | sdkmanager --licenses > /dev/null
+          /usr/bin/sh -c \sdkmanager --install 'build-tools;35.0.0' platform-tools 'platforms;android-35'> /dev/null
+          /usr/bin/sh -c \sdkmanager --install emulator --channel=0 > /dev/null
+          /usr/bin/sh -c \sdkmanager --install 'system-images;android-35;google_apis;x86_64' --channel=0 > /dev/null
+
+      - name: Emulator Setup
+        run: |
+          /usr/bin/sh -c \echo no | avdmanager create avd --force -n Pixel6Pro --abi 'google_apis/x86_64' --package 'system-images;android-35;google_apis;x86_64' --device 'pixel_6_pro'
+          /usr/bin/sh -c \/usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
+          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell input keyevent 82
+          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global window_animation_scale 0.0
+          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
+          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global animator_duration_scale 0.0
+
+      - name: Run Tests
+        run: /usr/bin/sh -c flutter logs & patrol test -t integration_test/app_test.dart
+
+      - name: Terminate Emulator:
+        run: /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
+
+
