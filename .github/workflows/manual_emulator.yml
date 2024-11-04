@@ -20,22 +20,6 @@ jobs:
           distribution: 'oracle'
           java-version: '17'  # Set Java version as required for your project
 
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2.14.0
-        with:
-          flutter-version: '3.0.5'  # Specify the Flutter version you need
-
-      - name: Install dependencies
-        run: |
-          flutter clean
-          flutter pub get
-      - name: Patrol
-        run: |
-          dart pub global activate patrol_cli
-          export PATH=$PATH:$HOME/.pub-cache/bin
-      - name: Patrol Doctor
-        run: patrol doctor
-
 
       - name: Enable KVM group perms
         run: |
@@ -54,7 +38,7 @@ jobs:
       - name: Emulator Setup
         run: |
           echo no | avdmanager create avd --force -n Pixel6Pro --abi 'google_apis/x86_64' --package 'system-images;android-35;google_apis;x86_64' --device 'pixel_6_pro'
-          emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
+          /usr/local/lib/android/sdk/./emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
           adb -s emulator-5554 shell input keyevent 82
           adb -s emulator-5554 shell settings put global window_animation_scale 0.0
           adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
