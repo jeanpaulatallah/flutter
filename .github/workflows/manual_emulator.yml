@@ -63,7 +63,7 @@ jobs:
       - name: Run Tests
         run: /usr/bin/sh -c flutter logs & patrol test -t integration_test/app_test.dart
 
-      - name: Terminate Emulator:
+      - name: Terminate Emulator
         run: /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
 
 
