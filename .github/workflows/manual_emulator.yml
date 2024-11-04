@@ -45,20 +45,20 @@ jobs:
 
 
       - name: Install and configure Android SDK
-        run: |
-          /usr/bin/sh -c \yes | sdkmanager --licenses > /dev/null
-          /usr/bin/sh -c \sdkmanager --install 'build-tools;35.0.0' platform-tools 'platforms;android-35'> /dev/null
-          /usr/bin/sh -c \sdkmanager --install emulator --channel=0 > /dev/null
-          /usr/bin/sh -c \sdkmanager --install 'system-images;android-35;google_apis;x86_64' --channel=0 > /dev/null
+        uses: android-actions/setup-android@v3.2.1
+        with:
+          cmdline-tools-version: 11076708
+          packages: tools platform-tools system-images;android-35;google_apis;x86_64 emulator build-tools;35.0.0 platforms;android-35
+          
 
       - name: Emulator Setup
         run: |
-          /usr/bin/sh -c \echo no | avdmanager create avd --force -n Pixel6Pro --abi 'google_apis/x86_64' --package 'system-images;android-35;google_apis;x86_64' --device 'pixel_6_pro'
-          /usr/bin/sh -c \/usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
-          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell input keyevent 82
-          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global window_animation_scale 0.0
-          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
-          /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global animator_duration_scale 0.0
+          echo no | avdmanager create avd --force -n Pixel6Pro --abi 'google_apis/x86_64' --package 'system-images;android-35;google_apis;x86_64' --device 'pixel_6_pro'
+          emulator -port 5554 -avd Pixel6Pro -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage &
+          adb -s emulator-5554 shell input keyevent 82
+          adb -s emulator-5554 shell settings put global window_animation_scale 0.0
+          adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
+          adb -s emulator-5554 shell settings put global animator_duration_scale 0.0
 
       - name: Run Tests
         run: /usr/bin/sh -c flutter logs & patrol test -t integration_test/app_test.dart
