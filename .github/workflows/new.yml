@@ -48,7 +48,7 @@ jobs:
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
-          pre-emulator-launch-script: $HOME/.android/avd/Pixel6Pro.avd/cat config.ini
+          pre-emulator-launch-script: cat $HOME/.android/avd/Pixel6Pro.avd/config.ini
           avd-name: Pixel6Pro
           api-level: 35
           target: google_apis
