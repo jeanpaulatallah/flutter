@@ -48,8 +48,15 @@ jobs:
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
+          pre-emulator-launch-script: $HOME/.android/avd/Pixel6Pro.avd/cat config.ini
+          avd-name: Pixel6Pro
           api-level: 35
           target: google_apis
           arch: x86_64
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-snapstorage
+          ram-size: '4096M'
+          cores: 4
+          enable-hw-keyboard: true
+          disable-animations: false
           profile: 'pixel_6_pro'
           script: flutter test integration_test/app_test.dart
