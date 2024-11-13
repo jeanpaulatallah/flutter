@@ -1,0 +1,26 @@
+name: Set up Tailscale
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4.5.0
+        with:
+          distribution: 'oracle'
+          java-version: '17'  # Set Java version as required for your project
+
+      - name: Connect Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: $TAILSCALE_AUTH_KEY
